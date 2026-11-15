@@ -11,10 +11,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --include=dev
 
-COPY angular.json tsconfig.json ./
-COPY src ./src
+COPY . .
 
-RUN ng build
+RUN npx ng build --configuration=production
 
 FROM node:24.22.1-bookworm-slim AS run
 
@@ -26,4 +25,4 @@ EXPOSE 4200
 
 USER node
 
-CMD ["node", "dist/server/server.mjs"]
+CMD ["node", "dist/frontend/server/server.mjs"]
