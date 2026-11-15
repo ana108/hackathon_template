@@ -1,0 +1,28 @@
+services:
+  frontend:
+    image: sustainabletext/hackathonfrontend:latest
+    restart: unless-stopped
+    pull_policy: missing
+    build:
+      context: ./frontend
+      args:
+        NODE_ENV: ${NODE_ENV}
+    ports:
+      - "4000:4000"
+    environment:
+      # SSR HttpClient only (browser still uses environment.prod.ts public URL).
+      UI_SERVICE_APP: http://backend:3000
+      NODE_ENV: ${NODE_ENV}
+
+  backend:
+    image: sustainabletext/hackathonbackend:latest
+    restart: unless-stopped
+    pull_policy: missing
+    build:
+      context: ./server
+      args:
+        NODE_ENV: ${NODE_ENV}
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV}
